@@ -182,79 +182,148 @@ mod tests {
     }
 
     #[test]
-    fn test_ltc_00100000_2mins_25fps_44100x8() {
-        test_timecode_file("testfiles/LTC_00100000_2mins_25fps_44100x8.wav",
+    fn test_ltc_00100000_2mins_25fps_44100x8_wav() {
+        test_timecode_wav_file("testfiles/LTC_00100000_2mins_25fps_44100x8.wav", 44100,
                            TimecodeFrame::new(0, 10, 0, 1, TwentyFive),
                            TimecodeFrame::new(0, 12, 1, 0, TwentyFive))
     }
 
+    #[test]
+    fn test_ltc_00100000_2mins_25fps_44100x8_bin() {
+        test_timecode_bin_file("testfiles/LTC_00100000_2mins_25fps_44100x8.bin", 44100,
+                           TimecodeFrame::new(0, 10, 0, 1, TwentyFive),
+                           TimecodeFrame::new(0, 12, 1, 0, TwentyFive))
+    }
 
     #[test]
-    fn test_ltc_00500000_2mins_30fps_44100x8() {
-        test_timecode_file("testfiles/LTC_00500000_2mins_30fps_44100x8.wav",
+    fn test_ltc_00500000_2mins_30fps_44100x8_wav() {
+        test_timecode_wav_file("testfiles/LTC_00500000_2mins_30fps_44100x8.wav", 44100,
                            TimecodeFrame::new(0, 50, 0, 1, Thirty),
                            TimecodeFrame::new(0, 52, 1, 0, Thirty))
     }
 
     #[test]
-    fn test_ltc_10000000_2mins_24fps_44100x16() {
-        test_timecode_file("testfiles/LTC_10000000_2mins_24fps_44100x16.wav",
+    fn test_ltc_00500000_2mins_30fps_44100x8_bin() {
+        test_timecode_bin_file("testfiles/LTC_00500000_2mins_30fps_44100x8.bin", 44100,
+                           TimecodeFrame::new(0, 50, 0, 1, Thirty),
+                           TimecodeFrame::new(0, 52, 1, 0, Thirty))
+    }
+
+    #[test]
+    fn test_ltc_10000000_2mins_24fps_44100x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_10000000_2mins_24fps_44100x16.wav", 44100,
                            TimecodeFrame::new(10, 0, 0, 1, TwentyFour),
                            TimecodeFrame::new(10, 2, 1, 0, TwentyFour))
     }
 
     #[test]
-    fn test_ltc_10100000_2mins_25fps_44100x16() {
-        test_timecode_file("testfiles/LTC_10100000_2mins_25fps_44100x16.wav",
+    fn test_ltc_10000000_2mins_24fps_44100x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_10000000_2mins_24fps_44100x16.bin", 44100,
+                           TimecodeFrame::new(10, 0, 0, 1, TwentyFour),
+                           TimecodeFrame::new(10, 2, 1, 0, TwentyFour))
+    }
+
+    #[test]
+    fn test_ltc_10100000_2mins_25fps_44100x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_10100000_2mins_25fps_44100x16.wav", 44100,
                            TimecodeFrame::new(10, 10, 0, 1, TwentyFive),
                            TimecodeFrame::new(10, 12, 1, 0, TwentyFive))
     }
 
     #[test]
-    fn test_ltc_10400000_2mins_30fps_44100x16() {
-        test_timecode_file("testfiles/LTC_10400000_2mins_30fps_44100x16.wav",
+    fn test_ltc_10100000_2mins_25fps_44100x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_10100000_2mins_25fps_44100x16.bin", 44100,
+                           TimecodeFrame::new(10, 10, 0, 1, TwentyFive),
+                           TimecodeFrame::new(10, 12, 1, 0, TwentyFive))
+    }
+
+    #[test]
+    fn test_ltc_10400000_2mins_30fps_44100x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_10400000_2mins_30fps_44100x16.wav", 44100,
                            TimecodeFrame::new(10, 40, 0, 1, Thirty),
                            TimecodeFrame::new(10, 42, 1, 0, Thirty))
     }
 
     #[test]
-    fn test_ltc_10500000_2mins_24fps_48000x16() {
-        test_timecode_file("testfiles/LTC_10500000_2mins_24fps_48000x16.wav",
+    fn test_ltc_10400000_2mins_30fps_44100x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_10400000_2mins_30fps_44100x16.bin", 44100,
+                           TimecodeFrame::new(10, 40, 0, 1, Thirty),
+                           TimecodeFrame::new(10, 42, 1, 0, Thirty))
+    }
+
+    #[test]
+    fn test_ltc_10500000_2mins_24fps_48000x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_10500000_2mins_24fps_48000x16.wav", 48000,
                            TimecodeFrame::new(10, 50, 0, 1, TwentyFour),
                            TimecodeFrame::new(10, 52, 1, 0, TwentyFour))
     }
 
     #[test]
-    fn test_ltc_11000000_2mins_25fps_48000x16() {
-        test_timecode_file("testfiles/LTC_11000000_2mins_25fps_48000x16.wav",
+    fn test_ltc_10500000_2mins_24fps_48000x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_10500000_2mins_24fps_48000x16.bin", 48000,
+                           TimecodeFrame::new(10, 50, 0, 1, TwentyFour),
+                           TimecodeFrame::new(10, 52, 1, 0, TwentyFour))
+    }
+
+    #[test]
+    fn test_ltc_11000000_2mins_25fps_48000x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_11000000_2mins_25fps_48000x16.wav", 48000,
+                           TimecodeFrame::new(11, 0, 0, 1, TwentyFive),
+                           TimecodeFrame::new(11, 2, 1, 0, TwentyFive))
+    }
+
+    #[test]
+    fn test_ltc_11000000_2mins_25fps_48000x16_bin() {
+        test_timecode_wav_file("testfiles/LTC_11000000_2mins_25fps_48000x16.wav", 48000,
                            TimecodeFrame::new(11, 0, 0, 1, TwentyFive),
                            TimecodeFrame::new(11, 2, 1, 0, TwentyFive))
     }
 
     #[test]
     fn test_ltc_11300000_2mins_30fps_48000x16() {
-        test_timecode_file("testfiles/LTC_11300000_2mins_30fps_48000x16.wav",
+        test_timecode_bin_file("testfiles/LTC_11300000_2mins_30fps_48000x16.bin", 48000,
                            TimecodeFrame::new(11, 30, 0, 1, Thirty),
                            TimecodeFrame::new(11, 32, 1, 0, Thirty))
     }
 
     #[test]
-    fn test_ltc_11400000_2mins_24fps_44100x16() {
-        test_timecode_file("testfiles/LTC_11400000_2mins_24fps_44100x16.wav",
+    fn test_ltc_11400000_2mins_24fps_44100x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_11400000_2mins_24fps_44100x16.wav", 44100,
                            TimecodeFrame::new(11, 40, 0, 1, TwentyFour),
                            TimecodeFrame::new(11, 42, 1, 0, TwentyFour))
     }
 
     #[test]
-    fn test_ltc_11500000_2mins_25fps_44100x16() {
-        test_timecode_file("testfiles/LTC_11500000_2mins_25fps_44100x16.wav",
+    fn test_ltc_11400000_2mins_24fps_44100x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_11400000_2mins_24fps_44100x16.bin", 44100,
+                           TimecodeFrame::new(11, 40, 0, 1, TwentyFour),
+                           TimecodeFrame::new(11, 42, 1, 0, TwentyFour))
+    }
+
+    #[test]
+    fn test_ltc_11500000_2mins_25fps_44100x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_11500000_2mins_25fps_44100x16.wav", 44100,
                            TimecodeFrame::new(11, 50, 0, 1, TwentyFive),
                            TimecodeFrame::new(11, 52, 1, 0, TwentyFive))
     }
 
     #[test]
-    fn test_ltc_12200000_2mins_30fps_44100x16() {
-        test_timecode_file("testfiles/LTC_12200000_2mins_30fps_44100x16.wav",
+    fn test_ltc_11500000_2mins_25fps_44100x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_11500000_2mins_25fps_44100x16.bin", 44100,
+                           TimecodeFrame::new(11, 50, 0, 1, TwentyFive),
+                           TimecodeFrame::new(11, 52, 1, 0, TwentyFive))
+    }
+
+    #[test]
+    fn test_ltc_12200000_2mins_30fps_44100x16_wav() {
+        test_timecode_wav_file("testfiles/LTC_12200000_2mins_30fps_44100x16.wav", 44100,
+                           TimecodeFrame::new(12, 20, 0, 1, Thirty),
+                           TimecodeFrame::new(12, 22, 1, 0, Thirty))
+    }
+
+    #[test]
+    fn test_ltc_12200000_2mins_30fps_44100x16_bin() {
+        test_timecode_bin_file("testfiles/LTC_12200000_2mins_30fps_44100x16.bin", 44100,
                            TimecodeFrame::new(12, 20, 0, 1, Thirty),
                            TimecodeFrame::new(12, 22, 1, 0, Thirty))
     }
@@ -263,16 +332,25 @@ mod tests {
     /// runs a test on decoding timecode sample by sample with specifing the first expected decoded
     /// Frame (usually 1 frame above the start of the audio, because the lib needs some tim to sync)
     /// and the last expected decoded Frame
-    fn test_timecode_file(file: &str, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
+    fn test_timecode_wav_file(file: &str, sampling_rate: u32, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
         let mut file = File::open(file).expect("File not found");
-        let (sampling_rate, samples) = get_timecode_file_data(&mut file);
-        test_timecode_frames(sampling_rate, samples, first_tc, last_tc);
+        let samples = get_timecode_file_data(&mut file);
+        test_timecode_samples(sampling_rate, samples, first_tc, last_tc);
+    }
+
+    /// runs a test on decoding timecode using zero-crossing count instead of samples
+    /// with specifing the first expected decoded Frame (usually 1 frame above the start of the data,
+    /// because the lib needs some time to sync) and the last expected decoded Frame
+    fn test_timecode_bin_file(file: &str, sampling_rate: u32, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
+        let file = File::open(file).expect("File not found");
+        let sample_counts = io::BufReader::with_capacity(1024 * 1024, file).bytes().map(|b| b.expect("could not read byte") as usize);
+        test_timecode_sample_count(sampling_rate, sample_counts, first_tc, last_tc);
     }
 
     /// runs a test on decoding timecode sample by sample with specifing the first expected decoded
     /// Frame (usually 1 frame above the start of the audio, because the lib needs some tim to sync)
     /// and the last expected decoded Frame
-    fn test_timecode_frames<T: Sample>(sampling_rate: u32, samples: impl Iterator<Item = T>, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
+    fn test_timecode_samples<T: Sample>(sampling_rate: u32, samples: impl Iterator<Item = T>, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
         let mut decoder = LtcDecoder::<T>::new(sampling_rate);
         let mut timecode = first_tc.clone();
         for sample in samples {
@@ -284,14 +362,28 @@ mod tests {
         assert_eq!(timecode, last_tc);
     }
 
+    /// runs a test on decoding timecode using zero-crossing count instead of samples
+    /// with specifing the first expected decoded Frame (usually 1 frame above the start of the data,
+    /// because the lib needs some time to sync) and the last expected decoded Frame
+    fn test_timecode_sample_count(sampling_rate: u32, samples: impl Iterator<Item = usize>, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
+        let mut decoder = LtcDecoder::<usize>::new(sampling_rate);
+        let mut timecode = first_tc.clone();
+        for sample_count in samples {
+            if let Some(tc) = decoder.get_timecode_frame_for_sample_count(sample_count) {
+                assert_eq!(tc, timecode);
+                timecode.add_frame();
+            }
+        }
+        assert_eq!(timecode, last_tc);
+    }
+
     /// Returns sample rate and data from a wav file that contains timecode data for testing
-    fn get_timecode_file_data<R>(file: &mut R) -> (u32, impl Iterator<Item = i32> + use<'_, R>)
+    fn get_timecode_file_data<R>(file: &mut R) -> impl Iterator<Item = i32> + use<'_, R>
         where R: io::Seek + Read, {
         let buf_reader = io::BufReader::with_capacity(1024 * 1024, file); // buffer reads so we don't read one sample at a time
         let reader = hound::WavReader::new(buf_reader).expect("could not open timecode file");
-        let spec = reader.spec();
-        let data = reader.into_samples::<i32>().step_by(spec.channels as usize).map(|s| s.expect("could not read sample"));
-        (spec.sample_rate, data)
+        let channels = reader.spec().channels;
+        reader.into_samples::<i32>().step_by(channels as usize).map(|s| s.expect("could not read sample"))
     }
 
 }
