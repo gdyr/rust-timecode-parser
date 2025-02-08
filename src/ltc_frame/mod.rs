@@ -76,11 +76,11 @@ impl LtcFrame {
         self.sync_word == Self::LTC_SYNC_WORD
     }
     ///Used to count how many samples a timecode-frame has needed to complete do determine FramesPerSecond of LTC
-    pub(crate) fn sample_received(&mut self) {
+    pub(crate) fn sample_received(&mut self, sample_count: usize) {
         if self.data.next_bit_is_start_of_frame() {
             self.frame_data_sample_count = 0;
         } else {
-            self.frame_data_sample_count += 1;
+            self.frame_data_sample_count += sample_count;
         }
     }
 

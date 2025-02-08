@@ -48,8 +48,15 @@ impl<T: Sample> BitDecoder<T> {
     /// Every audio sample-point that is received is pushed in this function. It will return if a bit
     /// is detected by returning true (1) or false (0)
     /// The function feeds and handles detection of audio-level for high and low as well as bit-heartbeat detection
-    pub(crate) fn get_bit(&mut self, sample: T) -> BitVal {
-        match self.threshold_cross_detector.crosses(sample) {
+    pub(crate) fn get_bit_for_sample(&mut self, sample: T) -> BitVal {
+        match self.threshold_cross_detector.sample_crosses(sample) {
+            Some(sample_count) => self.get_bit_for_sample_count(sample_count),
+            None => BitVal::None,
+        }
+    }
+
+    pub(crate) fn get_bit_for_sample_count(&mut self, sample_count: usize) -> BitVal {
+        match self.threshold_cross_detector.sample_count_crosses(sample_count) {
             ThresholdCross::None => BitVal::None,
             ThresholdCross::Invalid => BitVal::Invalid,
             ThresholdCross::Short => {
@@ -307,13 +314,13 @@ impl<T: Sample> ThresholdCrossDetector<T> {
         }
     }
 
-    /// Used to find threshold-crosses. Returns if a bit or a half-bit duration cross has been detected
-    fn crosses(&mut self, sample: T) -> ThresholdCross {
+    /// Used to find threshold-crosses. Returns the number of samples since between detected crosses
+    fn sample_crosses(&mut self, sample: T) -> Option<usize> {
         if let Some(is_high) = self.sample_bounds.is_high(sample) {
             if self.is_high.is_none() {
                 // Initial setting of current is-high
                 self.is_high = Some(is_high);
-                return ThresholdCross::None;
+                return None;
             }
             let changed = self.is_high.unwrap() != is_high;
             if changed {
@@ -324,20 +331,26 @@ impl<T: Sample> ThresholdCrossDetector<T> {
                     self.counting = true;
                     self.count = 0;
                 }
-                return ThresholdCross::None;
+                return None;
             }
             self.count += 1;
             if changed {
                 let count = self.count;
                 self.count = 0;
-                return self.state.cross_from_cross_size(count);
+                return Some(count);
             }
-            ThresholdCross::None
+            None
         } else {
             //Sample bounds does not know the treshold for low and high bits at the moment
-            ThresholdCross::None
+            None
         }
     }
+
+    /// Returns if a bit or a half-bit was detected after a threshold-cross
+    fn sample_count_crosses(&mut self, sample_count: usize) -> ThresholdCross {
+        self.state.cross_from_cross_size(sample_count)
+    }
+
     /// Used to invalidate the whole decoding system in case unexpected data is received.
     fn invalidate(&mut self) {
         self.counting = false;

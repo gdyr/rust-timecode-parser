@@ -34,9 +34,32 @@ impl<T: Sample> LtcDecoder<T> {
 impl<T: Sample> LtcDecoder<T> {
     /// Push received audio-sample-point one after another in this function. From time to time
     /// a Timecode-Frame will be returned to tell the current received timecode
+    pub fn get_timecode_frame_for_sample(&mut self, sample: T) -> Option<TimecodeFrame> {
+        self.ltc_frame.sample_received(1);
+        let bit = self.bit_decoder.get_bit_for_sample(sample);
+        self.get_timecode_frame_for_bitval(bit)
+    }
+
+    /// Push received audio-sample-point one after another in this function. From time to time
+    /// a Timecode-Frame will be returned to tell the current received timecode
+    #[deprecated(since="0.4.0", note="please use `get_timecode_frame_for_sample` instead")]
     pub fn get_timecode_frame(&mut self, sample: T) -> Option<TimecodeFrame> {
-        self.ltc_frame.sample_received();
-        match self.bit_decoder.get_bit(sample) {
+        self.get_timecode_frame_for_sample(sample)
+    }
+
+    /// Alternatively, push received audio sample count (number of samples between zero-crossings)
+    /// in this function. From time to time a Timecode-Frame will be returned to tell the current received timecode
+    /// 
+    /// This function is useful when decoding timecode using a timer peripheral of a microcontroller
+    /// to count the number of samples between zero-crossings, rather than decoding each sample
+    pub fn get_timecode_frame_for_sample_count(&mut self, sample_count: usize) -> Option<TimecodeFrame> {
+        self.ltc_frame.sample_received(sample_count);
+        let bit = self.bit_decoder.get_bit_for_sample_count(sample_count);
+        self.get_timecode_frame_for_bitval(bit)
+    }
+
+    fn get_timecode_frame_for_bitval(&mut self, bit: BitVal) -> Option<TimecodeFrame> {
+        match bit {
             BitVal::None => { return None; }
             BitVal::Invalid => {
                 self.invalidate();
@@ -51,6 +74,7 @@ impl<T: Sample> LtcDecoder<T> {
             None
         }
     }
+
     fn sample_count_to_duration_s(&self, sample_count: usize) -> f32 {
         (sample_count as f32) / self.sampling_rate
     }
@@ -252,7 +276,7 @@ mod tests {
         let mut decoder = LtcDecoder::<T>::new(sampling_rate);
         let mut timecode = first_tc.clone();
         for sample in samples {
-            if let Some(tc) = decoder.get_timecode_frame(sample) {
+            if let Some(tc) = decoder.get_timecode_frame_for_sample(sample) {
                 assert_eq!(tc, timecode);
                 timecode.add_frame();
             }
