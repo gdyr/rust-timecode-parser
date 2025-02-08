@@ -71,10 +71,9 @@ mod tests {
     use std::io::Read;
 
     use num_traits::Zero;
-    use wav::BitDepth;
 
     use crate::ltc_decoder::{LtcDecoder, Sample};
-    use crate::{TimecodeFrame};
+    use crate::TimecodeFrame;
     use crate::FramesPerSecond::{Thirty, TwentyFive, TwentyFour};
 
     #[test]
@@ -242,20 +241,14 @@ mod tests {
     /// and the last expected decoded Frame
     fn test_timecode_file(file: &str, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
         let mut file = File::open(file).expect("File not found");
-        let (sampling_rate, data) = get_timecode_file_data(&mut file);
-        match data {
-            BitDepth::Eight(samples) => test_timecode_frames(sampling_rate, samples, first_tc, last_tc),
-            BitDepth::Sixteen(samples) => test_timecode_frames(sampling_rate, samples, first_tc, last_tc),
-            BitDepth::TwentyFour(samples) => test_timecode_frames(sampling_rate, samples, first_tc, last_tc),
-            BitDepth::ThirtyTwoFloat(_) => panic!("Unsupported format"),
-            BitDepth::Empty => panic!("File is empty")
-        }
+        let (sampling_rate, samples) = get_timecode_file_data(&mut file);
+        test_timecode_frames(sampling_rate, samples, first_tc, last_tc);
     }
 
     /// runs a test on decoding timecode sample by sample with specifing the first expected decoded
     /// Frame (usually 1 frame above the start of the audio, because the lib needs some tim to sync)
     /// and the last expected decoded Frame
-    fn test_timecode_frames<T: Sample>(sampling_rate: u32, samples: Vec<T>, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
+    fn test_timecode_frames<T: Sample>(sampling_rate: u32, samples: impl Iterator<Item = T>, first_tc: TimecodeFrame, last_tc: TimecodeFrame) {
         let mut decoder = LtcDecoder::<T>::new(sampling_rate);
         let mut timecode = first_tc.clone();
         for sample in samples {
@@ -268,27 +261,13 @@ mod tests {
     }
 
     /// Returns sample rate and data from a wav file that contains timecode data for testing
-    fn get_timecode_file_data<R>(file: &mut R) -> (u32, BitDepth)
+    fn get_timecode_file_data<R>(file: &mut R) -> (u32, impl Iterator<Item = i32> + use<'_, R>)
         where R: io::Seek + Read, {
-        let (header, data) = wav::read(file).expect("could not open timecode file");
-        let data = get_left_channel(header.channel_count, data);
-        (header.sampling_rate, data)
+        let buf_reader = io::BufReader::with_capacity(1024 * 1024, file); // buffer reads so we don't read one sample at a time
+        let reader = hound::WavReader::new(buf_reader).expect("could not open timecode file");
+        let spec = reader.spec();
+        let data = reader.into_samples::<i32>().step_by(spec.channels as usize).map(|s| s.expect("could not read sample"));
+        (spec.sample_rate, data)
     }
 
-    /// Handles if a file is stereo
-    fn get_left_channel(channel_count: u16, samples: BitDepth) -> BitDepth {
-        if channel_count == 1 {
-            return samples;
-        }
-        if channel_count > 2 {
-            panic!("No more than two channels supported");
-        }
-        match samples {
-            BitDepth::Eight(samples) => BitDepth::Eight(samples.iter().skip(1).step_by(2).copied().collect()),
-            BitDepth::Sixteen(samples) => BitDepth::Sixteen(samples.iter().skip(1).step_by(2).copied().collect()),
-            BitDepth::TwentyFour(samples) => BitDepth::TwentyFour(samples.iter().skip(1).step_by(2).copied().collect()),
-            BitDepth::ThirtyTwoFloat(samples) => BitDepth::ThirtyTwoFloat(samples.iter().skip(1).step_by(2).copied().collect()),
-            BitDepth::Empty => BitDepth::Empty
-        }
-    }
 }

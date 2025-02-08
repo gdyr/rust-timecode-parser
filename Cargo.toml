@@ -17,7 +17,7 @@ intbits = "0.2.0"
 num-traits = "0.2.15"
 
 [dev-dependencies]
-wav = "1.0.0"
+hound = "3.5.1"
 rand = "0.8.5"
 
 [features]
