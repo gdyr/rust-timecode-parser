@@ -14,7 +14,7 @@ exclude = [
 
 [dependencies]
 intbits = "0.2.0"
-num-traits = "0.2.15"
+num-traits = { version = "0.2.15", default-features = false }
 
 [dev-dependencies]
 hound = "3.5.1"
